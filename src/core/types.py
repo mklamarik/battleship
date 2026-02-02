@@ -7,7 +7,14 @@ class ShotResult(Enum):
     SUNK = "sunk"
 
 
-class GameStatus(Enum):
+class GamePhase(Enum):
     INITIALIZING = "initializing"
-    ONGOING = "ongoing"
+    IN_PROGRESS = "in progress"
     FINISHED = "finished"
+
+
+class CellState(Enum):
+    WATER = "~"
+    SHIP = "#"
+    HIT = "X"
+    MISS = "O"

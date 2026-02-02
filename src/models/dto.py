@@ -2,7 +2,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from core.types import GameStatus, ShotResult
+from core.types import GamePhase, ShotResult
 
 
 class CreateGameRequest(BaseModel):
@@ -14,7 +14,7 @@ class CreateGameRequest(BaseModel):
 class CreateGameResponse(BaseModel):
     game_id: UUID
     current_player: str
-    status: GameStatus
+    status: GamePhase
 
 
 class MoveRequest(BaseModel):
@@ -32,4 +32,4 @@ class GameStateResponse(BaseModel):
     players: list[str]
     board_size: int
     current_player: str
-    status: GameStatus
+    status: GamePhase

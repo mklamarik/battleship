@@ -2,7 +2,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends
 
-from core.types import GameStatus
+from core.types import GamePhase
 from models.dto import (
     CreateGameRequest,
     CreateGameResponse,
@@ -27,9 +27,7 @@ def create_game(
     )
 
     return CreateGameResponse(
-        game_id=game.id,
-        current_player=game.current_player,
-        status=GameStatus.ONGOING,
+        game_id=game.game_id, current_player=game.current_player, status=GamePhase.IN_PROGRESS
     )
 
 
@@ -53,9 +51,9 @@ def get_game_state(
     game = game_service.get_game()
 
     return GameStateResponse(
-        game_id=game.id,
-        players=[game.player_1, game.player_2],
+        game_id=game.game_id,
+        players=game.players,
         board_size=game.board_size,
         current_player=game.current_player,
-        status=game.state.name(),
+        status=game.phase,
     )

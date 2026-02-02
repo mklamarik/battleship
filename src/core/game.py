@@ -1,32 +1,46 @@
-from uuid import UUID, uuid4
+from uuid import UUID
 
-from core.state import GameOverState, GameState, InitializingState, PlayerTurnState
-from core.types import GameStatus, ShotResult
+from core.board import Board
+from core.types import GamePhase, ShotResult
 
 
 class Game:
-    def __init__(self, player_1: str, player_2: str, board_size: int):
-        self.id: UUID = uuid4()
-        self.player_1 = player_1
-        self.player_2 = player_2
-        self.board_size = board_size
+    def __init__(self, game_id: UUID, player_1: str, player_2: str, board_size: int) -> None:
+        self.game_id: UUID = game_id
+        self.players: list[str] = [player_1, player_2]
+        self.board_size: int = board_size
+        self.current_player_index = 0
+        self.phase: GamePhase = GamePhase.INITIALIZING
 
-        self.current_player = player_1
-        self.state: GameState = InitializingState()
+        self.boards: dict[str, Board] = {
+            player_1: Board(self.board_size),
+            player_2: Board(self.board_size),
+        }
 
-    def status(self) -> GameStatus:
-        return (
-            GameStatus.ONGOING if not isinstance(self.state, GameOverState) else GameStatus.FINISHED
-        )
+    @property
+    def current_player(self) -> str:
+        return self.players[self.current_player_index]
+
+    def opponent(self) -> str:
+        return self.players[1 - self.current_player_index]
+
+    def switch_player(self) -> None:
+        self.current_player_index = 1 - self.current_player_index
 
     def start(self) -> None:
-        self.state = PlayerTurnState()
+        if self.phase != GamePhase.INITIALIZING:
+            raise RuntimeError("Game already started")
 
-    def make_move(self, x: int, y: int) -> ShotResult:
-        return self.state.handle_move(self, x, y)
+        self.phase = GamePhase.IN_PROGRESS
 
-    def other_player(self) -> str:
-        return self.player_2 if self.current_player == self.player_1 else self.player_1
+    def apply_move(self, x: int, y: int) -> ShotResult:
+        if self.phase != GamePhase.IN_PROGRESS:
+            raise RuntimeError("Game not in progress")
 
-    def end_game(self) -> None:
-        self.state = GameOverState()
+        board = self.boards[self.opponent()]
+        result = board.shoot(x, y)
+
+        if not board.all_ships_sunk():
+            self.phase = GamePhase.FINISHED
+
+        return result

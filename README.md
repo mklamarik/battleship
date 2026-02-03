@@ -40,6 +40,7 @@ pytest --cov
 ```
 
 ### Docker Deployment
+First rename the .env.example file to .env so it gets copied during image build.
 Build and run the containerized API:
 ```bash
 docker compose up

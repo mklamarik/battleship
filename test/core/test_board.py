@@ -2,6 +2,7 @@ import pytest
 
 from core.board.board import Board
 from core.coordinate import Coordinate
+from core.exceptions import DuplicateShotError, OutOfBoundsError
 from core.ships.ship import Ship
 from core.types import CellState, ShotResult
 
@@ -56,15 +57,15 @@ def test_given_receive_shot_when_same_cell_is_hit_then_second_hit_raises_error()
 
     board.receive_shot(2, 2)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(DuplicateShotError):
         board.receive_shot(2, 2)
 
 
 def test_given_receive_shot_when_coordinates_out_of_bounds_then_board_raises_error():
     board = make_board_with_ship(size=5, ship_cells={Coordinate(2, 2)})
 
-    with pytest.raises(ValueError):
+    with pytest.raises(OutOfBoundsError):
         board.receive_shot(-1, 0)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(OutOfBoundsError):
         board.receive_shot(5, 5)

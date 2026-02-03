@@ -2,6 +2,7 @@ import pytest
 
 from core.board.board import Board
 from core.board.random_placement import RandomPlacement
+from core.exceptions import PlacementError
 from core.ships.fleet_factory import FleetFactory
 from core.types import CellState
 
@@ -31,7 +32,7 @@ def test_given_random_placement_when_fleet_small_to_large_then_placement_fails_a
 
     board = Board(size=10)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(PlacementError):
         strategy = RandomPlacement(failing_seed)
         strategy.place(board, fleet)
 

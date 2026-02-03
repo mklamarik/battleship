@@ -4,6 +4,7 @@ import random
 from core.board.board import Board
 from core.board.placement import PlacementStrategy
 from core.coordinate import Coordinate
+from core.exceptions import PlacementError
 from core.ships.ship import Ship
 from core.ships.ship_shape import ShipShape
 from core.types import CellState
@@ -38,7 +39,7 @@ class RandomPlacement(PlacementStrategy):
                 return
 
         logging.error(f"Failed to place ship after {max_attempts}")
-        raise RuntimeError("Failed to place ship")
+        raise PlacementError("Failed to place ship")
 
     def _is_valid(self, board: Board, cells: set[Coordinate]) -> bool:
         return (

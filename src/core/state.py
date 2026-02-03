@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
+from core.exceptions import InvalidStateError
 from core.types import GamePhase, ShotResult
 
 if TYPE_CHECKING:
@@ -65,7 +66,7 @@ class FinishedState(GameState):
         return f"None (Winner: {self.winner})"
 
     def handle_shot(self, game: "Game", x: int, y: int) -> ShotResult:
-        raise ValueError("Game is already finished. No more moves allowed.")
+        raise InvalidStateError("Game is already finished. No more moves allowed.")
 
     def get_phase(self) -> GamePhase:
         return GamePhase.FINISHED

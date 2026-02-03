@@ -32,3 +32,62 @@ Run `docker compose up` from the root directory to run the API, then navigate to
 You can call the API from POSTMAN or any other request tool on this address.
 
 ## Examples
+### Initialize Game
+`POST /games`
+Creates a new game for provided players with a specified board size. 
+
+##### Request Body:
+```
+{
+  "player_1": "Alice",
+  "player_2": "Bob",
+  "board_size": 10,
+}
+```
+
+##### Response
+```
+{
+    "game_id": "00000000-0000-0000-0000-000000000000",
+    "current_player": "Alice",
+    "status": "in progress"
+}
+```
+
+### Get Game State
+`GET /games` 
+Retrieves the current status, including whose turn it is and the health of each fleet.
+
+Example Response:
+```
+{
+  "game_id": "uuid-123",
+  "status": "IN_PROGRESS",
+  "turn": "Alice",
+  "boards": {
+    "Alice": { "ships_remaining": 5, "hits_taken": 0 },
+    "Bob": { "ships_remaining": 5, "hits_taken": 2 }
+  }
+}
+```
+### Fire a Shot
+`POST /games/shots` 
+Submit an attack. The orchestrator validates the turn and the game state before processing.
+
+Request Body:
+```
+{
+  "player_name": "Alice",
+  "x": 4,
+  "y": 5
+}
+```
+
+Response (200 OK):
+```
+{
+  "result": "HIT",
+  "next_player", "Alice"
+  "status": "in progress"
+}
+```

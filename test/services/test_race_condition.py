@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+from core.exceptions import DuplicateShotError
 from core.types import ShotResult
 from services.game_service import GameService
 
@@ -19,7 +20,7 @@ async def test_given_make_move_when_request_is_spammed_by_same_player_then_cells
 
     def mock_receive_shot(x: int, y: int):
         if (x, y) in hits:
-            raise ValueError("Cell already shot")
+            raise DuplicateShotError("Cell already shot")
         time.sleep(0.1)
         hits.append((x, y))
         return ShotResult.HIT
@@ -50,7 +51,7 @@ async def test_given_make_move_if_lock_is_removed_then_cellstate_race_condition_
 
         def mock_receive_shot(x: int, y: int):
             if (x, y) in hits:
-                raise ValueError("Already shot")
+                raise DuplicateShotError("Already shot")
             time.sleep(0.1)
             hits.append((x, y))
             return ShotResult.HIT

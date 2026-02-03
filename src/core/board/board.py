@@ -1,6 +1,7 @@
 import logging
 
 from core.coordinate import Coordinate
+from core.exceptions import DuplicateShotError, OutOfBoundsError
 from core.ships.ship import Ship
 from core.types import CellState, ShotResult
 
@@ -22,7 +23,7 @@ class Board:
         state = self.grid[coord]
 
         if state in (CellState.HIT, CellState.MISS):
-            raise ValueError("Cell already shot")
+            raise DuplicateShotError("Cell already shot")
 
         if state == CellState.WATER:
             self.grid[coord] = CellState.MISS
@@ -44,10 +45,10 @@ class Board:
 
     def _validate_coordinate(self, coord: Coordinate) -> None:
         if not (0 <= coord.x < self.size and 0 <= coord.y < self.size):
-            raise ValueError("Shot out of bounds")
+            raise OutOfBoundsError("Shot out of bounds")
 
     def _find_ship_at(self, coord: Coordinate) -> Ship:
         for ship in self.ships:
             if coord in ship.cells:
                 return ship
-        raise RuntimeError("Invariant violated")
+        raise RuntimeError("Ship not found")

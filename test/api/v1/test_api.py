@@ -33,6 +33,20 @@ def test_given_create_game_when_invalid_board_size_then_validation_error_is_retu
     assert response.status_code == 422
 
 
+def test_given_make_move_when_coordinate_out_of_bounds_then_value_error_is_returned(
+    client: TestClient,
+) -> None:
+    _ = client.post(
+        "/api/v1/games", json={"player_1": "Alice", "player_2": "Bob", "board_size": 10}
+    )
+
+    response = client.post("/api/v1/games/moves", json={"x": 0, "y": 10})
+    assert response.status_code == 422
+
+    response = client.post("/api/v1/games/moves", json={"x": -1, "y": -30})
+    assert response.status_code == 422
+
+
 def test_given_create_game_when_game_is_created_then_correct_player_and_status_are_set(
     client: TestClient,
 ):
@@ -94,4 +108,4 @@ def test_given_games_api_when_game_is_played_full_then_game_concludes_successful
     assert response.json()["result"].lower() == "sunk"
 
     blocked_resp = client.post("/api/v1/games/moves", json={"x": 1, "y": 1})
-    assert blocked_resp.status_code == 400
+    assert blocked_resp.status_code == 404

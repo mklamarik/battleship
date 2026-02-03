@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Python / Environment
+.venv
+venv
+ENV
+env
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Dependency Managers
+.uv
+.python-version
+
+# Tests and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Dev / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
+dist/
+build/
+*.egg-info/

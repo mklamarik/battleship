@@ -5,11 +5,13 @@ from fastapi.responses import JSONResponse
 
 from api.v1.routes import router as v1_router
 from core.exceptions import DuplicateShotError, InvalidStateError, OutOfBoundsError, PlacementError
+from core.logging import setup_logging
 from core.settings import settings
 
 app = FastAPI(title=settings.app_name)
 app.include_router(v1_router, prefix="/api/v1")
 
+setup_logging()
 logger = logging.getLogger("battleships")
 
 

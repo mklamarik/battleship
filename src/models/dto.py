@@ -8,7 +8,7 @@ from core.types import GamePhase, ShotResult
 class CreateGameRequest(BaseModel):
     player_1: str
     player_2: str
-    board_size: int = Field(ge=10, le=20)
+    board_size: int = Field(ge=10, le=20)  # Input validation for board size
 
 
 class CreateGameResponse(BaseModel):
@@ -18,8 +18,8 @@ class CreateGameResponse(BaseModel):
 
 
 class MoveRequest(BaseModel):
-    x: int
-    y: int
+    x: int = Field(ge=0)  # Input validation for coordinates
+    y: int = Field(ge=0)
 
 
 class MoveResponse(BaseModel):

@@ -10,8 +10,8 @@ class Coordinate:
 
     def neighbors(self) -> set[Coordinate]:
         return {
-            Coordinate(self.x + dx, self.y + dy)
-            for dx in (-1, 0, 1)
-            for dy in (-1, 0, 1)
-            if not (dx == 0 and dy == 0)
+            Coordinate(self.x + x_offset, self.y + y_offset)
+            for x_offset in (-1, 0, 1)
+            for y_offset in (-1, 0, 1)
+            if not (x_offset == 0 and y_offset == 0)  # we already have center
         }

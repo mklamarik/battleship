@@ -14,7 +14,7 @@ class GamePhase(Enum):
 
 
 class CellState(Enum):
-    WATER = "~"
-    SHIP = "#"
-    HIT = "X"
-    MISS = "O"
+    WATER = "water"
+    SHIP = "ship"
+    HIT = "hit"
+    MISS = "miss"

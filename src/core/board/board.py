@@ -1,10 +1,10 @@
-from __future__ import annotations
-
-import random
+import logging
 
 from core.coordinate import Coordinate
-from core.ship import Ship
+from core.ships.ship import Ship
 from core.types import CellState, ShotResult
+
+logger = logging.getLogger(__name__)
 
 
 class Board:
@@ -14,24 +14,8 @@ class Board:
         self.ships: list[Ship] = []
 
         self._initialize_grid()
-        self._place_initial_ship()
 
-    def _initialize_grid(self) -> None:
-        for x in range(self.size):
-            for y in range(self.size):
-                self.grid[Coordinate(x, y)] = CellState.WATER
-
-    def _place_initial_ship(self) -> None:
-        coord = Coordinate(
-            random.randrange(self.size),
-            random.randrange(self.size),
-        )
-
-        ship = Ship(cells={coord}, hits=set())
-        self.ships.append(ship)
-        self.grid[coord] = CellState.SHIP
-
-    def shoot(self, x: int, y: int) -> ShotResult:
+    def receive_shot(self, x: int, y: int) -> ShotResult:
         coord = Coordinate(x, y)
         self._validate_coordinate(coord)
 
@@ -53,6 +37,11 @@ class Board:
     def all_ships_sunk(self) -> bool:
         return all(ship.is_sunk() for ship in self.ships)
 
+    def _initialize_grid(self) -> None:
+        for x in range(self.size):
+            for y in range(self.size):
+                self.grid[Coordinate(x, y)] = CellState.WATER
+
     def _validate_coordinate(self, coord: Coordinate) -> None:
         if not (0 <= coord.x < self.size and 0 <= coord.y < self.size):
             raise ValueError("Shot out of bounds")
@@ -61,4 +50,4 @@ class Board:
         for ship in self.ships:
             if coord in ship.cells:
                 return ship
-        raise RuntimeError("Invariant violated: ship not found")
+        raise RuntimeError("Invariant violated")

@@ -108,4 +108,4 @@ def test_given_games_api_when_game_is_played_full_then_game_concludes_successful
     assert response.json()["result"].lower() == "sunk"
 
     blocked_resp = client.post("/api/v1/games/moves", json={"x": 1, "y": 1})
-    assert blocked_resp.status_code == 404
+    assert blocked_resp.status_code == 400

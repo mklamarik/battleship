@@ -51,6 +51,7 @@ class Player2TurnState(GameState):
             game.set_state(Player1TurnState())
         elif game.boards[game.players[0]].all_ships_sunk():
             game.set_state(FinishedState(winner=game.current_player))
+            game.winner = game.current_player
 
         return result
 

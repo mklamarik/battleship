@@ -15,7 +15,7 @@ Simply run the following to install dependencies using the lockfile:
 uv sync --locked
 ```
 
-## 🚀 Running the Project
+## Running the Project
 
 ### Development Server
 Run the API using Poe the Poet:
@@ -50,7 +50,7 @@ The API binds to _0.0.0.0:8000_. You can access Swagger at http://localhost:8000
 
 ---
 
-## 📖 API Examples
+## API Examples
 
 ### 1. Initialize Game
 __POST /api/v1/games__

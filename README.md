@@ -25,3 +25,10 @@ You can input coordinates separated by a space. Pressing enter shoots at the opp
 ## Running tests
 With a virtual environment activated, simply run `pytest` to run the tests in the _test_ folder. 
 You can also get coverage by doing `pytest --cov`.
+
+## Docker
+You can run a docker/nerdctl compose that automatically builds the image and runs the API on _0.0.0.0_ and port _8000_.
+Run `docker compose up` from the root directory to run the API, then navigate to 0.0.0.0:8000/docs for swagger. 
+You can call the API from POSTMAN or any other request tool on this address.
+
+## Examples
